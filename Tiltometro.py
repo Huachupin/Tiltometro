@@ -94,8 +94,7 @@ def set_start_leds():
 
 def get_leds_lenght():
     url =  f"http://{NOMBRETIRA}.local/json/state"
-    state = requests.get(url).json()
-    #print(state["seg"][0]["len"])
+    state = requests.get(url).json()    
     return state["seg"][0]["len"]
 
 def tilt_decrement(value):
