@@ -37,11 +37,11 @@ class Bot(commands.Bot):
         print("-----------------------------------------") """            
 
     #@routines.routine(seconds=5, iterations=13)
-    @routines.routine(seconds=5, wait_first=True)
+    @routines.routine(seconds=30, wait_first=True)
     async def disminuye_tilt():        
         actual_tilt = get_leds_lenght()
         print(f'INTENTO DE DISMINUIR actual_tilt {actual_tilt}')
-        if actual_tilt >= 5: 
+        if actual_tilt >= 10: 
             print(f'disminuir tilt')
             print(f'actual_tilt {actual_tilt}')
             tilt_decrement(actual_tilt)            
@@ -60,13 +60,17 @@ class Bot(commands.Bot):
 
         # Send a hello back!
         # Sending a reply back to the channel is easy... Below is an example.
+        print("intento de AUMENTAR tilt")
+        actual_tilt = get_leds_lenght()
+        self.contador = actual_tilt
         if self.contador <= self.longitud_tira:
+            print("intento de AUMENTAR tilt - 2")
             print(f'contador | {self.contador}')
             self.contador = self.contador + 5        
             print(f'contador1 | {self.contador}')
             aumentar_tilt(self.contador)
             #await ctx.send(f'Hola {ctx.author.name} aumentaste en 1 el contador del tiltómetro!')
-        if self.contador == self.longitud_tira:
+        if self.contador >= self.longitud_tira:
             await ctx.send(f'Hola {ctx.author.name} el contador del tiltónmetro llegó al máximo!')
 
 #function to make an http get request
@@ -98,7 +102,7 @@ def get_leds_lenght():
     return state["seg"][0]["len"]
 
 def tilt_decrement(value):
-    url =  f"http://{NOMBRETIRA}.local/win&SS=0&S=0&S2={value - 5}"
+    url =  f"http://{NOMBRETIRA}.local/win&SS=0&S=0&S2={value - 10}"
     requests.get(url)
     if value < 105 and value > 70:
         url =  f"http://{NOMBRETIRA}.local/win&R=255&G=255&B=0" #amarillo
